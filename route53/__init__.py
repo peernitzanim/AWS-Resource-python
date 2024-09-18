@@ -5,28 +5,26 @@ from route53.delete_record import delete_record
 from route53.list_records import list_records
 from route53.update_record import update_record
 
-# from create_zone import create_zone
-# from create_record import create_record
-# from delete_record import delete_record
-# from list_records import list_records
-# from update_record import update_record
 
 def action_cli(args):
     if args.action == "create_zone":
-        create_zone(args.hosted_zone, args.myname, "cli")
+        print(create_zone(args.hosted_zone, args.myname, "cli"))
     else:
         hosted_zone_id = get_hosted_zone_id(args.hosted_zone, args.myname, "cli")
         if hosted_zone_id != 1 and hosted_zone_id != 2:
             if args.action == "list_records":
-                list_records(hosted_zone_id)
+                print(list_records(hosted_zone_id))
             elif args.action == "create_record":
-                create_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip)
+                print(create_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip))
             elif args.action == "delete_record":
-                delete_record(hosted_zone_id, args.name_record, args.hosted_zone)
+                print(delete_record(hosted_zone_id, args.name_record, args.hosted_zone))
             else:
-                update_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip)
+                print(update_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip))
         else:
-            print("wait")
+            if hosted_zone_id == 2:
+                print("The hosted zone name doesnt exists")
+            if hosted_zone_id == 1:
+                print("This is not your hosted zone")
 
 
 def action_app_route53(request):
@@ -44,9 +42,12 @@ def action_app_route53(request):
                 delete_record(hosted_zone_id, data['name_record'], data['hosted_zone'])
             elif "update_record"  in request.args:
                 update_record(hosted_zone_id, data['name_record'], data['hosted_zone'], data['ip'])
-            else: return "THE action dont exists"
+            else: return ["THE action dont exists",400]
         else:
-            print("wait")
+            if hosted_zone_id == 2:
+                return ["The hosted zone name doesnt exists", 400]
+            if hosted_zone_id == 1:
+                return ["This is not your hosted zone", 400]
 
 def action_jenkins_route53(jenkins_info):
     if "create_zone" in jenkins_info['action']:
@@ -65,7 +66,10 @@ def action_jenkins_route53(jenkins_info):
             else:
                 return "THE action dont exists"
         else:
-            print("wait")
+            if hosted_zone_id == 2:
+                return ["The hosted zone name doesnt exists", 400]
+            if hosted_zone_id == 1:
+                return ["This is not your hosted zone", 400]
 
 
 def get_hosted_zone_id(name_host_zone, myname, info):
@@ -85,7 +89,7 @@ def get_hosted_zone_id(name_host_zone, myname, info):
             for tag in response['ResourceTagSet']['Tags']:
                 if tag['Key'] == 'MyName' and tag['Value'] == myname:
                     return hosted_zone_id
-            else: return 1
+            else: return 1 #This is not your hosted zone
     else:
-        return 2
+        return 2 #The hosted zone name doesnt exists
 
