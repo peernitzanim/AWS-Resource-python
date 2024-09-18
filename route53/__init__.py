@@ -36,11 +36,11 @@ def action_app_route53(request):
         if hosted_zone_id != 1 and hosted_zone_id != 2:
             if "list_records" in request.args:
                 list_records(hosted_zone_id)
-            elif "create_record"  in request.args:
+            elif "create_record" in request.args:
                 create_record(hosted_zone_id, data['name_record'], data['hosted_zone'], data['ip'])
-            elif "delete_record"  in request.args:
+            elif "delete_record" in request.args:
                 delete_record(hosted_zone_id, data['name_record'], data['hosted_zone'])
-            elif "update_record"  in request.args:
+            elif "update_record" in request.args:
                 update_record(hosted_zone_id, data['name_record'], data['hosted_zone'], data['ip'])
             else: return ["THE action dont exists",400]
         else:
@@ -48,6 +48,7 @@ def action_app_route53(request):
                 return ["The hosted zone name doesnt exists", 400]
             if hosted_zone_id == 1:
                 return ["This is not your hosted zone", 400]
+
 
 def action_jenkins_route53(jenkins_info):
     if "create_zone" in jenkins_info['action']:
@@ -58,7 +59,8 @@ def action_jenkins_route53(jenkins_info):
             if "list_records" in jenkins_info['action']:
                 list_records(hosted_zone_id)
             elif "create_record" in jenkins_info['action']:
-                create_record(hosted_zone_id, jenkins_info['name_record'], jenkins_info['hosted_zone'], jenkins_info['ip'])
+                create_record(hosted_zone_id, jenkins_info['name_record'], jenkins_info['hosted_zone'],
+                              jenkins_info['ip'])
             elif "delete_record" in jenkins_info['action']:
                 delete_record(hosted_zone_id, jenkins_info['name_record'], jenkins_info['hosted_zone'])
             elif "update_record" in jenkins_info['action']:

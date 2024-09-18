@@ -41,3 +41,30 @@ def s3_delete(name, myname):
 def s3_update(name, myname, filename):
     jenkins_info = {'action': 'update', 'name': name, 'myname': myname, 'filename': filename}
     print(action_jenkins_s3(jenkins_info))
+
+
+def route53_create_hosted_zone(hosted_zone, myname):
+    jenkins_info = {'action': 'create_zone', 'hosted_zone': hosted_zone, 'myname': myname}
+    print(action_jenkins_ec2(jenkins_info)[0])
+
+
+def route53_list_records(myname):
+    jenkins_info = {'action': 'list_records', 'myname': myname}
+    print(action_jenkins_ec2(jenkins_info)[0])
+
+
+def route53_delete_records(hosted_zone, myname, name_record):
+    jenkins_info = {'action': 'delete_record', 'name_record': name_record, 'myname': myname, 'hosted_zone':hosted_zone}
+    print(action_jenkins_ec2(jenkins_info)[0])
+
+
+def route53_update_records(myname, ip, hosted_zone, name_record):
+    jenkins_info = {'action': 'update_record', 'name_record': name_record,
+                    'myname': myname, 'hosted_zone': hosted_zone, "ip": ip}
+    print(action_jenkins_ec2(jenkins_info)[0])
+
+
+def route53_create_records(myname, ip, hosted_zone, name_record):
+    jenkins_info = {'action': 'create_record', 'name_record': name_record,
+                    'myname': myname, 'hosted_zone': hosted_zone, "ip": ip}
+    print(action_jenkins_ec2(jenkins_info)[0])
