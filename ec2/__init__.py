@@ -7,13 +7,13 @@ import boto3
 
 def action_cli(args):
     if args.action == "list":
-        list_instances(args.myname, "cli")
+        print(list_instances(args.myname, "cli"))
     elif args.action == "create":
-        create_instance(args.name, args.myname, args.ami, args.instance_type, "cli")
+        print(create_instance(args.name, args.myname, args.ami, args.instance_type, "cli"))
     elif args.action == "delete":
-        vm_exists(args.name, args.myname, args.action, "cli")
+        print(vm_exists(args.name, args.myname, args.action, "cli"))
     else:
-        vm_exists(args.name, args.myname, args.action, "cli", args.status)
+        print(vm_exists(args.name, args.myname, args.action, "cli", args.status))
 
 
 def action_app_ec2(request):
