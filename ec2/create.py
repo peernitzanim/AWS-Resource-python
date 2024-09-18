@@ -3,7 +3,7 @@ from typing import List
 import boto3
 
 
-def create_instance(ec2_name, myname, ec2_ami, ec2_instance_type, info) :
+def create_instance(ec2_name, myname, info, ec2_ami=None, ec2_instance_type=None) :
     myname = f"{myname} {info}"
     ec2 = boto3.resource('ec2')
     name = ""
