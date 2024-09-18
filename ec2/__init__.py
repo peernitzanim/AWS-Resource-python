@@ -9,7 +9,7 @@ def action_cli(args):
     if args.action == "list":
         print(list_instances(args.myname, "cli"))
     elif args.action == "create":
-        print(create_instance(args.name, args.myname, args.ami, args.instance_type, "cli"))
+        print(create_instance(args.name, args.myname, "cli", args.ami, args.instance_type))
     elif args.action == "delete":
         print(vm_exists(args.name, args.myname, args.action, "cli"))
     else:
