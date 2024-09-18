@@ -71,6 +71,13 @@ elif args.resource == "s3":
         if not (args.myname and args.name):
             print("Error: --myname and --name are required for the 'create' action.")
             sys.exit(1)
+        if args.public == "yes":
+            confirmation = input("Are you sure you want to create a public S3 bucket? Type 'yes' to confirm: ")
+            if confirmation.lower() != "yes":
+                print("Action canceled. Public S3 bucket will not be created.")
+                sys.exit(1)
+            else:
+                print("Proceeding with public S3 bucket creation.")
         if not args.public:
             print("Note: It is recommended to specify --public for S3 bucket creation.")
     elif args.action == "update":
