@@ -10,13 +10,11 @@ def create_bucket(name, myname, public, info):
     for bucket in response['Buckets']:
         bucket_name = bucket['Name']
         if bucket_name == name:
-            print("Cant create the bucket -> The name of this bucket exists")
             return ["Cant create the bucket -> The name of this bucket exists", 400]
     try:
         s3.create_bucket(Bucket=name)
     except Exception as e:
         print(e)
-        print("cant create the vm the name of this s3 is not in the rules of s3")
         return ["cant create the vm the name of this s3 is not in the rules of s3", 400]
     tagging = s3.put_bucket_tagging(
         Bucket=name,
@@ -57,5 +55,4 @@ def create_bucket(name, myname, public, info):
 
         # Set the new policy
         s3.put_bucket_policy(Bucket=name, Policy=bucket_policy)
-        print("Create Bucket Success")
-        return "Create Bucket Success"
+        return ["Create Bucket Success", 200]
