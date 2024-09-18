@@ -26,12 +26,11 @@ def create_record(hosted_zone_id,name_record,name_host_zone,ip):
             },
             HostedZoneId=hosted_zone_id
         )
-        print(response)
-        print("Create New Record")
+        return ["Create New Record", 200]
     except Exception as e:
         exists_error = (f"Tried to create resource record set [name='{name_record}.{name_host_zone}.', type='A'"
                         f"] but it already exists")
         if exists_error in str(e):
-            print(exists_error)
+            return [exists_error, 400]
         else:
-            print(e)
+            return [str(e), 400]

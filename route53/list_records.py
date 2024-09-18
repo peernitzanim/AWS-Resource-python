@@ -9,5 +9,5 @@ def list_records(hosted_zone_id):
     list_record = []
     for record in response1['ResourceRecordSets']:
         list_record.append(f"{record['Name']} -> {record['ResourceRecords']}")
-    print(list_record)
-
+    # print(list_record)
+    return [str(list_record), 200]

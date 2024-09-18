@@ -30,7 +30,9 @@ def create_zone(name_hosted_zone, myname, info):
             ]
         )
         print("Create The Zone")
+        return ["Create The Zone", 200]
     except Exception as e:
         if "in region us-east-1 has already been associated with the hosted " in str(e):
-            print("Cant create the hosted zone -> thr name of this zone exists")
-        else:print(e)
+            return ["Cant create the hosted zone -> thr name of this zone exists", 400]
+        else:
+            return [str(e), 400]

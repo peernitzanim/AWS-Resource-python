@@ -8,18 +8,18 @@ from route53.update_record import update_record
 
 def action_cli(args):
     if args.action == "create_zone":
-        print(create_zone(args.hosted_zone, args.myname, "cli"))
+        print(create_zone(args.hosted_zone, args.myname, "cli")[0])
     else:
         hosted_zone_id = get_hosted_zone_id(args.hosted_zone, args.myname, "cli")
         if hosted_zone_id != 1 and hosted_zone_id != 2:
             if args.action == "list_records":
-                print(list_records(hosted_zone_id))
+                print(list_records(hosted_zone_id)[0])
             elif args.action == "create_record":
-                print(create_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip))
+                print(create_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip)[0])
             elif args.action == "delete_record":
-                print(delete_record(hosted_zone_id, args.name_record, args.hosted_zone))
+                print(delete_record(hosted_zone_id, args.name_record, args.hosted_zone)[0])
             else:
-                print(update_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip))
+                print(update_record(hosted_zone_id, args.name_record, args.hosted_zone, args.ip)[0])
         else:
             if hosted_zone_id == 2:
                 print("The hosted zone name doesnt exists")

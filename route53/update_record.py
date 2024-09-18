@@ -30,8 +30,8 @@ def update_record(hosted_zone_id, name_record, name_host_zone, ip):
                 },
                 HostedZoneId=hosted_zone_id,
             )
-            print("update the record")
-            return "update the record"
+            # print("update the record")
+            return ["update the record", 200]
     else:
-        print("The record doesnt exists check yourself")
+        # print("The record doesnt exists check yourself")
         return ["The record doesnt exists check yourself", 400]

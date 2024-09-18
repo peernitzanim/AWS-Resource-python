@@ -30,7 +30,5 @@ def delete_record(hosted_zone_id,name_record, name_host_zone):
                 },
                 HostedZoneId=hosted_zone_id,
             )
-            print(f"Delete {name_record_new} success")
-            return f"Delete {name_record_new} success"
-    print("Success")
-    return "success"
+            return [f"Delete {name_record_new} success", 200]
+    return ["success", 200]
