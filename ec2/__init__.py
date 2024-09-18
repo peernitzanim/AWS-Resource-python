@@ -7,13 +7,13 @@ import boto3
 
 def action_cli(args):
     if args.action == "list":
-        print(list_instances(args.myname, "cli"))
+        print(list_instances(args.myname, "cli")[0])
     elif args.action == "create":
-        print(create_instance(args.name, args.myname, "cli", args.ami, args.instance_type))
+        print(create_instance(args.name, args.myname, "cli", args.ami, args.instance_type)[0])
     elif args.action == "delete":
-        print(vm_exists(args.name, args.myname, args.action, "cli"))
+        print(vm_exists(args.name, args.myname, args.action, "cli")[0])
     else:
-        print(vm_exists(args.name, args.myname, args.action, "cli", args.status))
+        print(vm_exists(args.name, args.myname, args.action, "cli", args.status)[0])
 
 
 def action_app_ec2(request):
@@ -29,6 +29,7 @@ def action_app_ec2(request):
     else:
         return "THE action dont exists"
 
+
 def action_jenkins_ec2(jenkins_info):
     if 'list' in jenkins_info['action']:
         return list_instances(jenkins_info['myname'], "Jenkins")
@@ -36,10 +37,8 @@ def action_jenkins_ec2(jenkins_info):
         return create_instance(jenkins_info['name'], jenkins_info['myname'], "Jenkins", jenkins_info['ami'], jenkins_info['instance_type'])
     elif 'delete' in jenkins_info['action']:
         return vm_exists(jenkins_info['name'], jenkins_info['myname'], 'delete', "Jenkins")
-    elif 'update' in jenkins_info['action']:
-        return vm_exists(jenkins_info['name'], jenkins_info['myname'], 'update', "Jenkins", jenkins_info['status'])
     else:
-        return "THE action dont exists"
+        return vm_exists(jenkins_info['name'], jenkins_info['myname'], 'update', "Jenkins", jenkins_info['status'])
 
 
 def vm_exists(ec2_name, ec2_myname, action, info, status=None):
@@ -60,5 +59,5 @@ def vm_exists(ec2_name, ec2_myname, action, info, status=None):
                 if action == "delete":
                     return terminate_instance(instance.id)
     else:
-        print("The name of the ec2 instance doesnt exists")
+        # print("The name of the ec2 instance doesnt exists")
         return ["The name of the ec2 instance doesnt exists", 400]

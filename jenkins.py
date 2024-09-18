@@ -5,22 +5,22 @@ import route53
 
 def ec2_create(name, myname, ami, instance_type):
     jenkins_info = {'action': 'create', 'name': name, 'myname': myname, 'ami': ami, 'instance_type': instance_type}
-    print(action_jenkins_ec2(jenkins_info))
+    print(action_jenkins_ec2(jenkins_info)[0])
 
 
 def ec2_list(myname):
     jenkins_info = {'action': 'list', 'myname': myname}
-    print(action_jenkins_ec2(jenkins_info))
+    print(action_jenkins_ec2(jenkins_info)[0])
 
 
 def ec2_delete(name, myname):
     jenkins_info = {'action': 'delete', 'name': name, 'myname': myname}
-    print(action_jenkins_ec2(jenkins_info))
+    print(action_jenkins_ec2(jenkins_info)[0])
 
 
 def ec2_update(name, myname, status):
     jenkins_info = {'action': 'update', 'name': name, 'myname': myname, 'status': status}
-    print(action_jenkins_ec2(jenkins_info))
+    print(action_jenkins_ec2(jenkins_info)[0])
 
 
 def s3_create(name, myname, public):

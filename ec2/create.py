@@ -58,12 +58,12 @@ def create_instance(ec2_name, myname, info, ec2_ami=None, ec2_instance_type=None
 
         # wait the instance to run
         instance[0].wait_until_running()
-        print("create the vm enjoy")
+        # print("create the vm enjoy")
         return ["create the vm enjoy", 200]
     else:
         if count_machines == 2:
-            print("ERROR: cant create the machine you over the max")
+            # print("ERROR: cant create the machine you over the max")
             return ["ERROR: cant create the machine you over the max", 400]
         if name:
-            print("ERROR: sorry bro cant create this vm the name of this ec2 exists")
+            # print("ERROR: sorry bro cant create this vm the name of this ec2 exists")
             return ["ERROR: sorry bro cant create this vm the name of this ec2 exists", 400]

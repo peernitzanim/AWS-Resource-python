@@ -1,7 +1,7 @@
 import boto3
 
 
-def list_instances(ec2_myname, info) -> str:
+def list_instances(ec2_myname, info):
     list_of_instances = []
     ec2_myname = f"{ec2_myname} {info}"
     ec2 = boto3.resource('ec2')
@@ -16,5 +16,5 @@ def list_instances(ec2_myname, info) -> str:
                     name = tags['Value']
             if myname == ec2_myname:
                 list_of_instances.append(name)
-    print(list_of_instances)
-    return str(list_of_instances)
+    # print(list_of_instances)
+    return [str(list_of_instances), 200]
