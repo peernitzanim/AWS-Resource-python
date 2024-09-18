@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1' // Set your default AWS region
+    }
+    stages {
+        stage('Cloning Git') {
+            steps {
+                git([url: 'https://github.com/peernitzanim/AWS-Resource.git', branch: 'main', credentialsId: 'eaa88a41-7c5b-4882-9281-060dfe2def87'])
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                powershell '''
+                    C:/Users/peer/AppData/Local/Programs/Python/Python312/python.exe -m pip install boto3
+                '''
+            }
+        }
+
+        stage('Run Python Function') {
+            steps {
+                dir('C:/ProgramData/Jenkins/.jenkins/workspace/Route53-CreateHostedZone') {
+                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS TOKEN', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        withEnv([ 
+                            "AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}",
+                            "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}",
+                            "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"
+                        ]) {
+                            powershell """
+                                C:/Users/peer/AppData/Local/Programs/Python/Python312/python.exe -c \"
+import sys;
+sys.path.append('C:/ProgramData/Jenkins/.jenkins/workspace/Route53-CreateHostedZone');
+from jenkins import route53_create_hosted_zone;
+route53_create_hosted_zone('${hosted_zone}', '${myname}');
+                                \"
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
