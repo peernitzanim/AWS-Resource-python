@@ -1,30 +1,35 @@
 from typing import List
-
 import boto3
 
 
-def create_instance(ec2_name, myname, info, ec2_ami=None, ec2_instance_type=None) :
-    myname = f"{myname} {info}"
-    ec2 = boto3.resource('ec2')
+def create_instance(ec2_name, myname, info, ec2_ami=None, ec2_instance_type=None):
+    myname = f"{myname} {info}"  # Combine the provided name with additional info
+    ec2 = boto3.resource('ec2')  # Initialize the EC2 resource
     name = ""
     count_machines = 0
+
+    # Iterate over all EC2 instances
     for instance in ec2.instances.all():
         for tags in instance.tags:
+            # Check if the instance is running or stopped
             if instance.state['Name'] == "running" or instance.state['Name'] == "stopped":
-                if tags['Key'] == 'Name':
-                    if tags['Value'] == ec2_name:
-                        name = tags['Value']
-                if tags['Key'] == 'MyName':
-                    if tags['Value'] == myname:
-                        count_machines += 1
+                # Check if the instance has the specified 'Name' tag
+                if tags['Key'] == 'Name' and tags['Value'] == ec2_name:
+                    name = tags['Value']
+                # Check if the instance has the specified 'MyName' tag
+                if tags['Key'] == 'MyName' and tags['Value'] == myname:
+                    count_machines += 1
+
     if not name and count_machines < 2:
+        # Default AMI and instance type
         ami = "ami-0182f373e66f89c85"
         if ec2_ami == "ubuntu":
             ami = "ami-0e86e20dae9224db8"
         instance_type = "t3.nano"
         if ec2_instance_type:
             instance_type = ec2_instance_type
-        # Create the instance
+
+        # Create the EC2 instance
         instance = ec2.create_instances(
             ImageId=ami,
             InstanceType=instance_type,
@@ -56,14 +61,14 @@ def create_instance(ec2_name, myname, info, ec2_ami=None, ec2_instance_type=None
             ],
         )
 
-        # wait the instance to run
+        # Wait for the instance to start running
         instance[0].wait_until_running()
-        # print("create the vm enjoy")
-        return ["create the vm enjoy", 200]
+        # Return a success message indicating that the instance was created
+        return ["Instance creation successful. Enjoy your VM!", 200]
     else:
+        # Return an error message if the maximum number of machines is reached
         if count_machines == 2:
-            # print("ERROR: cant create the machine you over the max")
-            return ["ERROR: cant create the machine you over the max", 400]
+            return ["ERROR: Cannot create the machine; maximum number of instances reached.", 400]
+        # Return an error message if an instance with the same name already exists
         if name:
-            # print("ERROR: sorry bro cant create this vm the name of this ec2 exists")
-            return ["ERROR: sorry bro cant create this vm the name of this ec2 exists", 400]
+            return ["ERROR: Cannot create the VM; an instance with this name already exists.", 400]
