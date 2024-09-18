@@ -5,7 +5,8 @@ import route53
 
 def ec2_create(name, myname, ami, instance_type):
     jenkins_info = {'action': 'create', 'name': name, 'myname': myname, 'ami': ami, 'instance_type': instance_type}
-    action_jenkins_ec2(jenkins_info)
+    print("hello")
+    # action_jenkins_ec2(jenkins_info)
 
 
 def ec2_list(myname):
